@@ -315,6 +315,30 @@ footer a { text-decoration: none; }
 .hero .hero-grid { margin-top: 28px; align-items: start; }
 .hero .hero-grid .typed { margin-top: 0; }
 @media (max-width: 960px) { .photo { border-width: 4px; border-radius: 14px; } }
+
+/* ===== Readable black body text in all cards + nicer "More projects" ===== */
+.unit p, .unit .metric span, .unit .track-l, .unit .ba div, .unit .dept, .unit .tags li,
+.commit ul, .commit li, .commit .role, .commit .meta,
+.repo p, .repo .when, .repo .figs div span, .repo .tags li, .repo .path, .repo.small .foot,
+.stackline, .stackline .small { color: #111111; }
+.unit p, .repo p, .commit li { font-weight: 400; }
+.unit h3, .repo h3, .commit h3 { color: #0B0B0B; font-weight: 700; }
+.unit .metric span, .repo .figs div span, .commit .meta, .repo .when, .track-l { font-weight: 400; }
+.tags li { background: rgba(47, 107, 255, .09); }
+
+/* More projects */
+.repos.more .repo.small { border: 1px solid rgba(255, 255, 255, .95); }
+.repo.small .body { gap: 10px; }
+.repo.small h3 { font-size: 18px; }
+.repo.small p { font-size: 15px; line-height: 1.55; }
+.repo.small .foot { border-top: 1px solid var(--line); padding-top: 12px; margin-top: auto; font-size: 13px; font-weight: 500; }
+.repo.small .foot > span:first-child { background: rgba(47, 107, 255, .09); border-radius: 999px; padding: 5px 10px; }
+.repo.small .foot > span:first-child:empty { display: none; }
+.repo .links a { display: inline-block; font-size: 13px; font-weight: 600; color: #fff; background: var(--ink); border-radius: 999px; padding: 7px 13px; }
+.repo .links a:hover { text-decoration: none; background: var(--accent); }
+.repo .figs .links { align-self: center; gap: 8px; }
+.repo.small .foot > span:last-child:empty { display: none; }
+
 </style>
 
 </head>
@@ -691,6 +715,25 @@ footer a { text-decoration: none; }
   </div>
 </footer>
 
+<script>
+/* Always open at the top, and keep section links out of the address bar */
+(function () {
+  try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+  if (location.hash) { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+  function top() { window.scrollTo(0, 0); }
+  top(); window.addEventListener('load', function () { top(); setTimeout(top, 0); });
+  window.addEventListener('pageshow', function (e) { if (e.persisted) top(); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    e.preventDefault();
+    if (!id || id === 'top') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+</script>
 <script>
 (function () {
   var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
